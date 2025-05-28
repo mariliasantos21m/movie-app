@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
 class MovieModel {
   int? id;
   String title;
@@ -7,7 +5,7 @@ class MovieModel {
   String urlImage;
   int ageRangeId;
   String duration;
-  Double rating;
+  double rating;
   int year;
   String description;
 
