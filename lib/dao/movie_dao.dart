@@ -11,17 +11,27 @@ class MovieDao {
 
   Future<List<MovieWithAgeRangeModel>?> findAll() async {
     final db = await dbHelper.initDb();
+    print("CHAMADA DAO");
 
     try {
       final listMap = await db.rawQuery('''
-        SELECT *.movies, age_ranges.name
+        SELECT 
+          movies.id, 
+          movies.title,
+          movies.genres,
+          movies.url_image,
+          age_ranges.name,
+          movies.duration,
+          movies.rating, 
+          movies.year,
+          movies.description
         FROM
           movies
           INNER JOIN age_ranges ON age_ranges.id = movies.age_range_id
         ORDER BY 
           movies.title
       ''');
-
+      print("list Map DAO");
       List<MovieWithAgeRangeModel> movies = [];
       for (var map in listMap) {
         movies.add(MovieWithAgeRangeModel.fromMap(map));
@@ -29,9 +39,11 @@ class MovieDao {
 
       return movies;
     } catch (e) {
+      print(e);
       return null;
     } finally {
       db.close();
+      print("finallyyyyy");
     }
   }
 
