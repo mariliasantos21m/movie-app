@@ -3,6 +3,7 @@ import 'package:movie_app/app_colors.dart';
 import 'package:movie_app/model/movie_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
+import 'package:movie_app/view/create_movie.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key});
@@ -59,7 +60,7 @@ class _MovieListState extends State<MovieList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCustom(),
+      appBar: const AppBarCustom(title: "Filmes"),
       body: Container(
         color: AppColors.background,
         child: Center(
@@ -72,7 +73,17 @@ class _MovieListState extends State<MovieList> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed:
+            () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const CreateMovie();
+                  },
+                ),
+              ),
+            },
         backgroundColor: AppColors.primary,
         hoverColor: AppColors.primaryDark,
         child: Icon(Icons.add, color: AppColors.text),

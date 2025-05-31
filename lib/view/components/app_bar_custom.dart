@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/app_colors.dart';
 
 class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarCustom({super.key});
+  final String title;
+
+  const AppBarCustom({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
+    final canPop = ModalRoute.canPopOf(context) ?? false;
+
     return AppBar(
-      title: const Text(
-        "Filmes",
+      leading:
+          canPop
+              ? IconButton(
+                onPressed: () => {Navigator.pop(context)},
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: AppColors.text,
+                ),
+              )
+              : null,
+      title: Text(
+        title,
         style: TextStyle(color: AppColors.text, fontWeight: FontWeight.bold),
       ),
       actions: [
@@ -41,10 +55,10 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text("Ok"),
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.primary,
                         ),
+                        child: Text("OK"),
                       ),
                     ],
                   ),
