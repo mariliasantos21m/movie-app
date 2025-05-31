@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_colors.dart';
-import 'package:movie_app/model/movie_model.dart';
+import 'package:movie_app/controller/movie_controller.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movie_app/model/movie_with_age_range_model.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
 import 'package:movie_app/view/create_movie.dart';
 
@@ -13,49 +14,7 @@ class MovieList extends StatefulWidget {
 }
 
 class _MovieListState extends State<MovieList> {
-  final List<MovieModel> mockMovies = [
-    MovieModel(
-      id: 1,
-      title: 'A Jornada do Herói',
-      genres: 'Aventura',
-      urlImage:
-          'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
-      ageRangeId: 2,
-      duration: "1h 20min",
-      rating: 4.7,
-      year: 2023,
-      description:
-          'Um jovem camponês descobre que está destinado a salvar seu reino de uma força sombria.',
-    ),
-    MovieModel(
-      id: 2,
-      title: 'No Limite do Medo',
-      genres: 'Terror',
-      urlImage:
-          'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
-      ageRangeId: 4,
-      duration: "2h 10min",
-      rating: 3.9,
-      year: 2022,
-      description:
-          'Durante um fim de semana isolado, um grupo de amigos descobre que não estão sozinhos.',
-    ),
-    MovieModel(
-      id: 3,
-      title: 'Amor em Paris',
-      genres: 'Romance',
-      urlImage:
-          'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
-      ageRangeId: 1,
-      duration: '2h 20min',
-      rating: 4.2,
-      year: 2021,
-      description:
-          'Dois estranhos se encontram em Paris e descobrem que o amor pode surgir onde menos se espera.',
-    ),
-  ];
-  @override
-  void initialState() {}
+  final _movieController = MovieController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +23,30 @@ class _MovieListState extends State<MovieList> {
       body: Container(
         color: AppColors.background,
         child: Center(
-          child: ListView.builder(
-            itemCount: mockMovies.length,
-            itemBuilder: (context, index) {
-              return buildItemList(mockMovies[index]);
+          child: FutureBuilder(
+            future: _movieController.findAll(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final movies = snapshot.data;
+                return movies != null
+                    ? ListView.builder(
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        return buildItemList(movies[index]);
+                      },
+                    )
+                    : Text(
+                      "Nenhum filme encontrado.",
+                      style: TextStyle(color: AppColors.subTitle),
+                    );
+              } else if (snapshot.hasError) {
+                return Text(
+                  "Error: ${snapshot.error}",
+                  style: TextStyle(color: AppColors.subTitle),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
             },
           ),
         ),
@@ -91,7 +70,7 @@ class _MovieListState extends State<MovieList> {
     );
   }
 
-  Widget buildItemList(MovieModel movie) {
+  Widget buildItemList(MovieWithAgeRangeModel movie) {
     return Container(
       padding: EdgeInsets.all(8),
       child: Material(
