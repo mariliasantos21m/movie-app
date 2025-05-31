@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/app_colors.dart';
 import 'package:movie_app/model/movie_model.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key});
@@ -18,7 +19,7 @@ class _MovieListState extends State<MovieList> {
       urlImage:
           'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
       ageRangeId: 2,
-      duration: "1h20min",
+      duration: "1h 20min",
       rating: 4.7,
       year: 2023,
       description:
@@ -31,7 +32,7 @@ class _MovieListState extends State<MovieList> {
       urlImage:
           'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
       ageRangeId: 4,
-      duration: "2h",
+      duration: "2h 10min",
       rating: 3.9,
       year: 2022,
       description:
@@ -44,7 +45,7 @@ class _MovieListState extends State<MovieList> {
       urlImage:
           'https://img.freepik.com/vetores-gratis/amor-em-paris_23-2147506097.jpg?semt=ais_hybrid&w=740',
       ageRangeId: 1,
-      duration: '2h20m',
+      duration: '2h 20min',
       rating: 4.2,
       year: 2021,
       description:
@@ -76,7 +77,7 @@ class _MovieListState extends State<MovieList> {
           child: ListView.builder(
             itemCount: mockMovies.length,
             itemBuilder: (context, index) {
-              return buildItemList(index);
+              return buildItemList(mockMovies[index]);
             },
           ),
         ),
@@ -90,24 +91,21 @@ class _MovieListState extends State<MovieList> {
     );
   }
 
-  Widget buildItemList(index) {
+  Widget buildItemList(MovieModel movie) {
     return Container(
-      padding: EdgeInsetsDirectional.only(start: 8, top: 8, end: 8),
-      height: 150,
+      padding: EdgeInsets.all(8),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(5)),
         color: AppColors.card,
-        // ou Colors.white, dependendo do seu design
         child: ListTile(
-          contentPadding: EdgeInsetsDirectional.only(start: 10, end: 10),
-          leading: Container(
+          leading: SizedBox(
             height: double.infinity,
-            child: Image.network(mockMovies[index].urlImage, fit: BoxFit.cover),
+            child: Image.network(movie.urlImage, fit: BoxFit.cover),
           ),
           title: Container(
             padding: EdgeInsetsDirectional.only(bottom: 5.0),
             child: Text(
-              mockMovies[index].title,
+              movie.title,
               style: TextStyle(
                 color: AppColors.text,
                 fontWeight: FontWeight.bold,
@@ -120,15 +118,23 @@ class _MovieListState extends State<MovieList> {
               Container(
                 padding: EdgeInsetsDirectional.only(bottom: 5.0),
                 child: Text(
-                  mockMovies[index].genres,
+                  movie.genres,
                   style: TextStyle(color: AppColors.subTitle, fontSize: 12),
                 ),
               ),
               Text(
-                mockMovies[index].duration,
+                movie.duration,
                 style: TextStyle(color: AppColors.subTitle, fontSize: 12),
               ),
-              SizedBox(width: 4),
+              SizedBox(width: 20, height: 20),
+              RatingBarIndicator(
+                rating: movie.rating,
+                itemBuilder:
+                    (context, index) =>
+                        Icon(Icons.star, color: AppColors.primary),
+                itemCount: 5,
+                itemSize: 20,
+              ),
             ],
           ),
         ),
