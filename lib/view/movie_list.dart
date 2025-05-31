@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/app_colors.dart';
 import 'package:movie_app/model/movie_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movie_app/view/components/app_bar_custom.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key});
@@ -58,19 +59,7 @@ class _MovieListState extends State<MovieList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Filmes",
-          style: TextStyle(color: AppColors.text, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: Icon(Icons.info, color: AppColors.text),
-          ),
-        ],
-        backgroundColor: AppColors.background,
-      ),
+      appBar: const AppBarCustom(),
       body: Container(
         color: AppColors.background,
         child: Center(
