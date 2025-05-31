@@ -10,11 +10,11 @@ class MovieService {
   }
 
   Future<int?> save(MovieModel movie) async {
-    await _movieDao.save(movie);
+    return await _movieDao.save(movie);
   }
 
   Future<void> delete(int id) async {
-    await _movieDao.delete(id);
+    return await _movieDao.delete(id);
   }
 
   Future<int?> update(int id, MovieModel movie) async {

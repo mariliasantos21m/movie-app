@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/app_colors.dart';
+import 'package:movie_app/controller/age_range_controller.dart';
+import 'package:movie_app/controller/movie_controller.dart';
 import 'package:movie_app/model/age_range_model.dart';
 import 'package:movie_app/model/movie_model.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
@@ -14,6 +16,7 @@ class CreateMovie extends StatefulWidget {
 }
 
 class _CreateMovieState extends State<CreateMovie> {
+  // variáveis do form
   final _keyForm = GlobalKey<FormState>();
   final _inputUrlImage = TextEditingController();
   final _inputTitle = TextEditingController();
@@ -24,11 +27,9 @@ class _CreateMovieState extends State<CreateMovie> {
   final _inputYear = TextEditingController();
   final _inputDescription = TextEditingController();
 
-  final List<AgeRangeModel> ageRangeMock = [
-    AgeRangeModel(id: 1, name: "teste 1", value: 1),
-    AgeRangeModel(id: 2, name: "teste 2", value: 1),
-    AgeRangeModel(id: 3, name: "teste 3", value: 1),
-  ];
+  // controllers
+  final _ageRangeController = AgeRangeController();
+  final _movieController = MovieController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,31 +47,53 @@ class _CreateMovieState extends State<CreateMovie> {
               InputForm(controller: _inputGenres, label: "Gênero"),
               Container(
                 padding: EdgeInsets.only(bottom: 12, top: 12),
-                child: DropdownButtonFormField<int>(
-                  decoration: InputDecoration(
-                    labelText: "Faixa Etária:",
-                    labelStyle: TextStyle(
-                      color: AppColors.subTitle,
-                      fontSize: 20,
-                    ),
-                    border: InputBorder.none,
-                  ),
-                  dropdownColor: AppColors.card,
-                  value: _selectAgeRange,
-                  items:
-                      ageRangeMock.map((item) {
-                        return DropdownMenuItem<int>(
-                          value: item.id,
-                          child: Text(
-                            item.name,
+                child: FutureBuilder(
+                  future: _ageRangeController.findAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final ageRanges = snapshot.data;
+                      return ageRanges != null && ageRanges.isNotEmpty
+                          ? DropdownButtonFormField<int>(
+                            decoration: InputDecoration(
+                              labelText: "Faixa Etária:",
+                              labelStyle: TextStyle(
+                                color: AppColors.subTitle,
+                                fontSize: 20,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            dropdownColor: AppColors.card,
+                            value: _selectAgeRange,
+                            items:
+                                ageRanges.map((item) {
+                                  return DropdownMenuItem<int>(
+                                    value: item.id,
+                                    child: Text(
+                                      item.name,
+                                      style: TextStyle(
+                                        color: AppColors.subTitle,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectAgeRange = value ?? 0;
+                              });
+                            },
+                          )
+                          : Text(
+                            "Nenhum resultado encontrado.",
                             style: TextStyle(color: AppColors.subTitle),
-                          ),
-                        );
-                      }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectAgeRange = value ?? 0;
-                    });
+                          );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        "Error: ${snapshot.error}",
+                        style: TextStyle(color: AppColors.subTitle),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
                   },
                 ),
               ),
@@ -127,7 +150,12 @@ class _CreateMovieState extends State<CreateMovie> {
             description: _inputDescription.text,
           );
 
-          print(movieNew);
+          _movieController.save(movieNew);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Cadastro realizado com sucesso")),
+          );
+
+          Navigator.pop(context);
         },
         backgroundColor: AppColors.primary,
         hoverColor: AppColors.primaryDark,

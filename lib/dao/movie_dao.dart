@@ -11,7 +11,6 @@ class MovieDao {
 
   Future<List<MovieWithAgeRangeModel>?> findAll() async {
     final db = await dbHelper.initDb();
-    print("CHAMADA DAO");
 
     try {
       final listMap = await db.rawQuery('''
@@ -20,7 +19,7 @@ class MovieDao {
           movies.title,
           movies.genres,
           movies.url_image,
-          age_ranges.name,
+          age_ranges.name AS age_range_name,
           movies.duration,
           movies.rating, 
           movies.year,
@@ -31,7 +30,6 @@ class MovieDao {
         ORDER BY 
           movies.title
       ''');
-      print("list Map DAO");
       List<MovieWithAgeRangeModel> movies = [];
       for (var map in listMap) {
         movies.add(MovieWithAgeRangeModel.fromMap(map));
@@ -40,10 +38,9 @@ class MovieDao {
       return movies;
     } catch (e) {
       print(e);
-      return null;
+      throw Exception("Erro ao buscar dados.");
     } finally {
       db.close();
-      print("finallyyyyy");
     }
   }
 
@@ -53,7 +50,8 @@ class MovieDao {
     try {
       return await db.insert('movies', movieModel.toMap());
     } catch (e) {
-      return null;
+      print(e);
+      throw Exception("Erro ao salvar dados.");
     } finally {
       db.close();
     }
@@ -66,6 +64,7 @@ class MovieDao {
       await db.delete('movies', where: 'id = ?', whereArgs: [id]);
     } catch (e) {
       print(e);
+      throw Exception("Erro ao deletar dados.");
     } finally {
       db.close();
     }
@@ -83,7 +82,7 @@ class MovieDao {
       );
     } catch (e) {
       print(e);
-      return null;
+      throw Exception("Erro ao atualizar dados.");
     } finally {
       db.close();
     }

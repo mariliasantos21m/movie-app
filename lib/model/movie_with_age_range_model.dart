@@ -25,7 +25,7 @@ class MovieWithAgeRangeModel {
     return MovieWithAgeRangeModel(
       title: map['title'],
       genres: map['genres'],
-      urlImage: map['urlImage'],
+      urlImage: map['url_image'],
       ageRangeName: map['age_range_name'], // coluna retornada pelo JOIN
       duration: map['duration'],
       rating: map['rating'],

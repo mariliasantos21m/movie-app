@@ -28,7 +28,7 @@ class _MovieListState extends State<MovieList> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final movies = snapshot.data;
-                return movies != null
+                return movies != null && movies.isNotEmpty
                     ? ListView.builder(
                       itemCount: movies.length,
                       itemBuilder: (context, index) {
@@ -61,7 +61,9 @@ class _MovieListState extends State<MovieList> {
                     return const CreateMovie();
                   },
                 ),
-              ),
+              ).then((value) {
+                setState(() {});
+              }),
             },
         backgroundColor: AppColors.primary,
         hoverColor: AppColors.primaryDark,
