@@ -32,7 +32,38 @@ class _MovieListState extends State<MovieList> {
                     ? ListView.builder(
                       itemCount: movies.length,
                       itemBuilder: (context, index) {
-                        return buildItemList(movies[index]);
+                        return Dismissible(
+                          key: Key(movies[index].id.toString()),
+                          background: Container(
+                            alignment: AlignmentDirectional.centerEnd,
+                            color: Colors.redAccent[700],
+                            height: 100,
+                            child: Icon(Icons.delete, color: AppColors.text),
+                          ),
+                          onDismissed: (direction) async {
+                            try {
+                              await _movieController.delete(movies[index].id);
+
+                              setState(() {
+                                movies.removeAt(index);
+                              });
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Filme removido com sucesso.'),
+                                ),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Erro ao remover o filme: $e'),
+                                ),
+                              );
+                            }
+                          },
+                          direction: DismissDirection.endToStart,
+                          child: buildItemList(movies[index]),
+                        );
                       },
                     )
                     : Text(

@@ -1,5 +1,5 @@
 class MovieWithAgeRangeModel {
-  int? id;
+  int id;
   String title;
   String genres;
   String urlImage;
@@ -10,7 +10,7 @@ class MovieWithAgeRangeModel {
   String description;
 
   MovieWithAgeRangeModel({
-    this.id,
+    required this.id,
     required this.title,
     required this.genres,
     required this.urlImage,
@@ -23,6 +23,7 @@ class MovieWithAgeRangeModel {
 
   factory MovieWithAgeRangeModel.fromMap(Map<String, dynamic> map) {
     return MovieWithAgeRangeModel(
+      id: map['id'],
       title: map['title'],
       genres: map['genres'],
       urlImage: map['url_image'],
