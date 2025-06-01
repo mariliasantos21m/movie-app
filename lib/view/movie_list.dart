@@ -158,8 +158,46 @@ class _MovieListState extends State<MovieList> {
               ),
             ],
           ),
+          onTap: () {
+            menuBottom();
+          },
         ),
       ),
+    );
+  }
+
+  Future menuBottom() {
+    return showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      backgroundColor: AppColors.card,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(
+                  'Exibir Dados',
+                  style: TextStyle(color: AppColors.text),
+                ),
+                onTap: () {
+                  print("exibir");
+                },
+              ),
+              ListTile(
+                title: Text('Alterar', style: TextStyle(color: AppColors.text)),
+                onTap: () {
+                  print("editar");
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
