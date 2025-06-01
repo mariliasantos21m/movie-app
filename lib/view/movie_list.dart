@@ -75,13 +75,22 @@ class _MovieListState extends State<MovieList> {
   Widget buildItemList(MovieWithAgeRangeModel movie) {
     return Container(
       padding: EdgeInsets.all(8),
-      child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+      child: Card(
         color: AppColors.card,
         child: ListTile(
           leading: SizedBox(
-            height: double.infinity,
-            child: Image.network(movie.urlImage, fit: BoxFit.cover),
+            height: 100,
+            width: 50,
+            child: Image.network(
+              movie.urlImage,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  "images/not_found_image.jpg",
+                  fit: BoxFit.fill,
+                );
+              },
+              fit: BoxFit.fill,
+            ),
           ),
           title: Container(
             padding: EdgeInsetsDirectional.only(bottom: 5.0),
