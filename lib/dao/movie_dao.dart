@@ -20,6 +20,7 @@ class MovieDao {
           movies.genres,
           movies.url_image,
           age_ranges.name AS age_range_name,
+          age_ranges.id AS age_range_id,
           movies.duration,
           movies.rating, 
           movies.year,
@@ -75,7 +76,7 @@ class MovieDao {
 
     try {
       return await db.update(
-        "movie",
+        "movies",
         movie.toMap(),
         where: "id = ?",
         whereArgs: [id],

@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/model/movie_with_age_range_model.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
 import 'package:movie_app/view/create_movie.dart';
+import 'package:movie_app/view/update_movie.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key});
@@ -159,14 +160,14 @@ class _MovieListState extends State<MovieList> {
             ],
           ),
           onTap: () {
-            menuBottom();
+            menuBottom(movie);
           },
         ),
       ),
     );
   }
 
-  Future menuBottom() {
+  Future<void> menuBottom(MovieWithAgeRangeModel movieTarget) {
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -191,7 +192,17 @@ class _MovieListState extends State<MovieList> {
               ListTile(
                 title: Text('Alterar', style: TextStyle(color: AppColors.text)),
                 onTap: () {
-                  print("editar");
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return UpdateMovie(movieUpdate: movieTarget);
+                      },
+                    ),
+                  ).then((value) {
+                    setState(() {});
+                  });
                 },
               ),
             ],

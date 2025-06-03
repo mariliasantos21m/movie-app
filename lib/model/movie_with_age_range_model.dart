@@ -4,6 +4,7 @@ class MovieWithAgeRangeModel {
   String genres;
   String urlImage;
   String ageRangeName;
+  int ageRangeId;
   String duration;
   double rating;
   int year;
@@ -15,6 +16,7 @@ class MovieWithAgeRangeModel {
     required this.genres,
     required this.urlImage,
     required this.ageRangeName,
+    required this.ageRangeId,
     required this.duration,
     required this.rating,
     required this.year,
@@ -27,7 +29,8 @@ class MovieWithAgeRangeModel {
       title: map['title'],
       genres: map['genres'],
       urlImage: map['url_image'],
-      ageRangeName: map['age_range_name'], // coluna retornada pelo JOIN
+      ageRangeName: map['age_range_name'],
+      ageRangeId: map['age_range_id'],
       duration: map['duration'],
       rating: map['rating'],
       year: map['year'],
