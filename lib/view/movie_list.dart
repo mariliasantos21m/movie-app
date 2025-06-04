@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/model/movie_with_age_range_model.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
 import 'package:movie_app/view/create_movie.dart';
+import 'package:movie_app/view/details_movie.dart';
 import 'package:movie_app/view/update_movie.dart';
 
 class MovieList extends StatefulWidget {
@@ -186,7 +187,17 @@ class _MovieListState extends State<MovieList> {
                   style: TextStyle(color: AppColors.text),
                 ),
                 onTap: () {
-                  print("exibir");
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DetailsMovie(movie: movieTarget);
+                      },
+                    ),
+                  ).then((value) {
+                    setState(() {});
+                  });
                 },
               ),
               ListTile(
