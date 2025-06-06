@@ -1,6 +1,5 @@
 import 'package:movie_app/database/database_helper.dart';
 import 'package:movie_app/model/age_range_model.dart';
-import 'package:movie_app/model/movie_with_age_range_model.dart';
 
 class AgeRangeDao {
   late DatabaseHelper dbHelper;
@@ -22,6 +21,7 @@ class AgeRangeDao {
       return ageRangeList;
     } catch (e) {
       print(e);
+      throw Exception("Erro ao buscar classificações.");
     } finally {
       db.close();
     }

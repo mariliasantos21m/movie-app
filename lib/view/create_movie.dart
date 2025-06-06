@@ -3,7 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/app_colors.dart';
 import 'package:movie_app/controller/age_range_controller.dart';
 import 'package:movie_app/controller/movie_controller.dart';
-import 'package:movie_app/model/age_range_model.dart';
 import 'package:movie_app/model/movie_model.dart';
 import 'package:movie_app/view/components/app_bar_custom.dart';
 import 'package:movie_app/view/components/input_form.dart';
